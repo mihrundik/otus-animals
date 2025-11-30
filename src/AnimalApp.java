@@ -101,10 +101,9 @@ public class AnimalApp {
     }
 
 
-
     private static Command getCommand(Scanner scanner) {
         String commandInput = null;
-        while (Command.doseNotContain(commandInput)){
+        while (Command.doseNotContain(commandInput)) {
             if (commandInput != null) {
                 System.out.println("Введена неверная команда!");
             }
