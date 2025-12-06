@@ -54,13 +54,47 @@ public class AnimalApp {
 
                 // запрос параметров животного
                 System.out.print("Имя животного: ");
-                String name = scanner.next().trim();
+                String name = "";
+                while (true) {
+                    name = scanner.nextLine();
+                    if (!name.trim().isEmpty()){
+                        break;
+                    } else {
+                        System.out.println("Имя животного не было введено. Повторите ввод.");
+                    }
+                }
 
-                System.out.print("Возраст животного: ");
-                int age = Integer.parseInt(scanner.next());
+                int age = 0;
+                while (true) {
+                    try {
+                        System.out.print("Возраст животного: ");
+                        age = Integer.parseInt(scanner.nextLine());
 
-                System.out.print("Вес животного: ");
-                double weight = Double.parseDouble(scanner.next());
+                        if (age >= 0) {
+                            break;
+                        } else {
+                            System.out.println("Возраст не может быть отрицательным числом. Повторите ввод.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Для возраста используйте цифры.");
+                    }
+                }
+
+                double weight = 0;
+                while (true) {
+                    try {
+                        System.out.print("Вес животного: ");
+                        weight = Double.parseDouble(scanner.nextLine());
+
+                        if (weight >= 0) {
+                            break;
+                        } else {
+                            System.out.println("Вес не может быть отрицательным числом. Повторите ввод.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Для веса используйте цифры.");
+                    }
+                }
 
                 Color animalColor = selectColor(scanner);
 
@@ -107,7 +141,7 @@ public class AnimalApp {
             if (commandInput != null) {
                 System.out.println("Введена неверная команда!");
             }
-            System.out.printf("Введите одну из команд (%s): ", String.join("/", Command.NAMES));
+            System.out.printf("Введите одну из команд (%s): ", String.join("/", Command.COMMAND));
             commandInput = scanner.next();
         }
         return Command.fromString(commandInput);
