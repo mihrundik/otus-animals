@@ -23,7 +23,9 @@ public abstract class Animal {
     }
 
     public void setName(String name) {
-        this.name = name;
+        char name1 = Character.toUpperCase(name.charAt(0));
+        String name2 = name.substring(1);
+        this.name = name1 + name2;
     }
 
     public int getAge() {
