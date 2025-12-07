@@ -7,7 +7,7 @@ public enum Command {
     LIST,
     EXIT;
 
-    public static List<String> NAMES = collectNames();
+    public static List<String> COMMAND = collectNames();
 
     private static List<String> collectNames() {
         List<String> result = new ArrayList<>();
@@ -22,7 +22,7 @@ public enum Command {
         if (value == null) {
             return true;
         }
-        return !NAMES.contains(value.toUpperCase().trim());
+        return !COMMAND.contains(value.toUpperCase().trim());
     }
 
     public static Command fromString(String value) {
