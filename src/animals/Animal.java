@@ -57,6 +57,8 @@ public abstract class Animal {
         System.out.println("Я говорю");
     }
 
+    public void fly() {};
+
     public void go() {
         System.out.println("Я иду");
     }
