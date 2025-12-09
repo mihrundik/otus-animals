@@ -1,5 +1,3 @@
-import factory.AnimalType;
-
 import java.util.Scanner;
 
 public class ReadName {
