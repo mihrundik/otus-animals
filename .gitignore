@@ -1,21 +1,6 @@
 ### IntelliJ IDEA ###
 out/
-
-### Eclipse ###
-.classpath
-.project
-.settings
-.bin/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
+.idea/
 
 ### Mac OS ###
 .DS_Store
