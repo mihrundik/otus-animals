@@ -15,7 +15,6 @@ import animals.Animal;
 //9)Если exit
 //выйти из программы.
 
-import animals.Color;
 import factory.AnimalFactory;
 import factory.AnimalType;
 
@@ -35,115 +34,32 @@ public class AnimalApp {
         Command currentCommand = null;
 
         while (currentCommand != Command.EXIT) {
-            currentCommand = getCommand(scanner);
+            currentCommand = ReadCommand.getCommand(scanner);
             if (currentCommand == Command.LIST) {
                 if (animals.isEmpty()) {
                     scanner.nextLine();
                     System.out.println("Список пуст.");
                 }
                 for (Animal animal : animals) {
-                    scanner.nextLine();
                     System.out.println(animal);
                 }
             } else if (currentCommand == Command.ADD) {
-                scanner.nextLine();
-                AnimalType animalType = selectAnimalType(scanner);
+                AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
                 Animal animal = animalFactory.create(animalType);
 
-                scanner.nextLine();
+                // определяем и устанавливаем параметры животных
+                animal.setName(ReadName.readName(scanner));
 
-                // запрос параметров животного
-                System.out.print("Имя животного: ");
-                String name = "";
-                while (true) {
-                    name = scanner.nextLine();
-                    if (!name.trim().isEmpty()){
-                        break;
-                    } else {
-                        System.out.println("Имя животного не было введено. Повторите ввод.");
-                    }
-                }
+                int age = ReadPositiveParam.readPositiveAge(scanner);
+                double weight = ReadPositiveParam.readPositiveDouble(scanner);
 
-                int age = 0;
-                while (true) {
-                    try {
-                        System.out.print("Возраст животного: ");
-                        age = Integer.parseInt(scanner.nextLine());
-
-                        if (age >= 0) {
-                            break;
-                        } else {
-                            System.out.println("Возраст не может быть отрицательным числом. Повторите ввод.");
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Для возраста используйте цифры.");
-                    }
-                }
-
-                double weight = 0;
-                while (true) {
-                    try {
-                        System.out.print("Вес животного: ");
-                        weight = Double.parseDouble(scanner.nextLine());
-
-                        if (weight >= 0) {
-                            break;
-                        } else {
-                            System.out.println("Вес не может быть отрицательным числом. Повторите ввод.");
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Для веса используйте цифры.");
-                    }
-                }
-
-                Color animalColor = selectColor(scanner);
-
-                // установка полученных параметров
-                animal.setName(name);
                 animal.setAge(age);
-                animal.setWeight((int) weight);
-                animal.setColor(animalColor);
+                animal.setWeight(weight);
+                animal.setColor(ReadSelectColor.selectColor(scanner));
 
                 animals.add(animal);
                 animal.say();
             }
         }
-    }
-
-    private static Color selectColor(Scanner scanner) {
-        String colorInput = null;
-        while (Color.doseNotContain3(colorInput)) {
-            if (colorInput != null) {
-                System.out.println("Введён неправильный цвет животного!");
-            }
-            System.out.printf("Введите один из цветов животных (%s): ", String.join("/", Color.COLORS));
-            colorInput = scanner.next();
-        }
-        return Color.fromString3(colorInput);
-    }
-
-    private static AnimalType selectAnimalType(Scanner scanner) {
-        String animalInput = null;
-        while (AnimalType.doseNotContain2(animalInput)) {
-            if (animalInput != null) {
-                System.out.println("Введён неправильный тип животного!");
-            }
-            System.out.printf("Введите один из типов животных (%s): ", String.join("/", AnimalType.TYPES));
-            animalInput = scanner.next();
-        }
-        return AnimalType.fromString2(animalInput);
-    }
-
-
-    private static Command getCommand(Scanner scanner) {
-        String commandInput = null;
-        while (Command.doseNotContain(commandInput)) {
-            if (commandInput != null) {
-                System.out.println("Введена неверная команда!");
-            }
-            System.out.printf("Введите одну из команд (%s): ", String.join("/", Command.COMMAND));
-            commandInput = scanner.next();
-        }
-        return Command.fromString(commandInput);
     }
 }

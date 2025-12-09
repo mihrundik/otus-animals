@@ -15,7 +15,7 @@ public abstract class Animal {
 
     private String name;
     private int age;
-    private int weight;
+    private double weight;
     private Color color;
 
     public String getName() {
@@ -36,11 +36,11 @@ public abstract class Animal {
         this.age = age;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
@@ -71,7 +71,7 @@ public abstract class Animal {
 
     @Override
     public String toString() {
-        return String.format("Привет! Меня зовут %s, мне %d %s, я вешу - %d кг, мой цвет - %s.", name, age, getAgeSuffix(), weight, getColorValue());
+        return String.format("Привет! Меня зовут %s, мне %d %s, я вешу - %.2f кг, мой цвет - %s.", name, age, getAgeSuffix(), weight, getColorValue());
     }
 
     private String getColorValue() {
