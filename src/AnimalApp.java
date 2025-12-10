@@ -15,6 +15,7 @@ import animals.Animal;
 //9)Если exit
 //выйти из программы.
 
+import birds.Duck;
 import factory.AnimalFactory;
 import factory.AnimalType;
 
@@ -59,6 +60,11 @@ public class AnimalApp {
 
                 animals.add(animal);
                 animal.say();
+
+                // вызов интерфейса для утки
+                if (animal instanceof Duck) {
+                    ((Duck) animal).fly();
+                }
             }
         }
     }
