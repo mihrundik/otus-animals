@@ -1,4 +1,4 @@
-package birds;
+package app.birds;
 
 //2) Создайте интерфейс Flying
 //Методы:

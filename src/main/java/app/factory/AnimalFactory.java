@@ -1,9 +1,8 @@
-package factory;
+package app.factory;
 
-import animals.Animal;
-import animals.Cat;
-import animals.Dog;
-import birds.Duck;
+import app.animals.Cat;
+import app.animals.Dog;
+import app.birds.Duck;
 
 public class AnimalFactory {
 

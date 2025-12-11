@@ -1,8 +1,10 @@
+package app.utilities;
+
 import java.util.Scanner;
 
 public class ReadPositiveParam {
 
-    static int readPositiveAge(Scanner scanner) {
+    public static int readPositiveAge(Scanner scanner) {
         while (true) {
             System.out.print("Возраст животного: ");
             String input = scanner.nextLine().trim();
@@ -15,7 +17,7 @@ public class ReadPositiveParam {
         }
     }
 
-    static double readPositiveDouble(Scanner scanner) {
+    public static double readPositiveDouble(Scanner scanner) {
         while (true) {
             System.out.print("Вес животного (вес можно вести целым или дробным числом через точку): ");
             String input = scanner.nextLine().trim();

@@ -1,4 +1,4 @@
-import animals.Animal;
+import app.factory.Animal;
 
 //6) В основной программе:
 //Создайте ArrayList Animal
@@ -15,9 +15,10 @@ import animals.Animal;
 //9)Если exit
 //выйти из программы.
 
-import birds.Duck;
-import factory.AnimalFactory;
-import factory.AnimalType;
+import app.birds.Duck;
+import app.factory.AnimalFactory;
+import app.factory.AnimalType;
+import app.utilities.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,12 @@
-import factory.AnimalType;
+package app.utilities;
+
+import app.factory.AnimalType;
 
 import java.util.Scanner;
 
 public class ReadAnimalType {
 
-    static AnimalType selectAnimalType(Scanner scanner) {
+    public static AnimalType selectAnimalType(Scanner scanner) {
         String animalInput = "";
         while (AnimalType.doseNotContain2(animalInput)) {
             if (!animalInput.isEmpty()) {

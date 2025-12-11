@@ -1,8 +1,10 @@
+package app.utilities;
+
 import java.util.Scanner;
 
 public class ReadCommand {
 
-    static Command getCommand(Scanner scanner) {
+    public static Command getCommand(Scanner scanner) {
         String commandInput = null;
         while (Command.doseNotContain(commandInput)) {
             if (commandInput != null && !commandInput.trim().isEmpty()) {

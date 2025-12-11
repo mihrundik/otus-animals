@@ -1,8 +1,10 @@
+package app.utilities;
+
 import java.util.Scanner;
 
 public class ReadName {
 
-    static String readName(Scanner scanner) {
+    public static String readName(Scanner scanner) {
         String name = "";
         while (true) {
             System.out.print("Имя животного: ");

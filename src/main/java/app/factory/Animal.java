@@ -1,4 +1,4 @@
-package animals;
+package app.factory;
 
 //1) Создайте родительский класс Animal
 //Свойства: name, age, weight, color

@@ -1,10 +1,12 @@
-import animals.Color;
+package app.utilities;
+
+import app.factory.Color;
 
 import java.util.Scanner;
 
 public class ReadSelectColor {
 
-    static Color selectColor(Scanner scanner) {
+    public static Color selectColor(Scanner scanner) {
         String colorInput = "";
         while (Color.doseNotContain3(colorInput)) {
             if (!colorInput.isEmpty()) {
