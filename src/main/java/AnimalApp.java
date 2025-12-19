@@ -19,6 +19,8 @@ import app.birds.Duck;
 import app.factory.AnimalFactory;
 import app.factory.AnimalType;
 import app.utilities.*;
+import db.ConnectionManager;
+import db.tools_db.RetrieveAnimals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,6 @@ public class AnimalApp {
     public static void main(String[] args) {
 
         List<Animal> animals = new ArrayList<>();
-        AnimalFactory animalFactory = new AnimalFactory();
 
         Scanner scanner = new Scanner(System.in);
         Command currentCommand = null;
@@ -47,7 +48,7 @@ public class AnimalApp {
                 }
             } else if (currentCommand == Command.ADD) {
                 AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
-                Animal animal = animalFactory.create(animalType);
+                Animal animal = AnimalFactory.create(animalType);
 
                 // определяем и устанавливаем параметры животных
                 animal.setName(ReadName.readName(scanner));
