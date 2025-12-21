@@ -1,26 +1,12 @@
-import app.factory.Animal;
-
-//6) В основной программе:
-//Создайте ArrayList Animal
-//Создайте в консоли меню. При входе в приложение на экран выводится запрос команды add/list/exit
-//Команды оформить в enum. При вводе команды она должна быть регистронезависимой и обрезать пробелы в начале и конце
-//7) Если add
-//спросить какое животное (cat/dog/duck)
-//cпросить имя, возраст, вес, цвет
-//bнициализировать класс
-//добавить экземпляр в ArrayList и вызвать метод Say()
-//dернуться к главному меню
-//8) Если list
-//Вывести на экран метод toString() для всех элементов массива
-//9)Если exit
-//выйти из программы.
-
 import app.birds.Duck;
+import app.factory.Animal;
 import app.factory.AnimalFactory;
 import app.factory.AnimalType;
 import app.utilities.*;
 import db.ConnectionManager;
-import db.tools_db.RetrieveAnimals;
+import db.dao.AnimalTable;
+import db.dao.RetrieveAnimals;
+import db.tools_db.InsertAnimals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +25,38 @@ public class AnimalApp {
         while (currentCommand != Command.EXIT) {
             currentCommand = ReadCommand.getCommand(scanner);
             if (currentCommand == Command.LIST) {
-                if (animals.isEmpty()) {
-                    scanner.nextLine();
-                    System.out.println("Список пуст.");
-                }
-                for (Animal animal : animals) {
-                    System.out.println(animal);
+//                if (animals.isEmpty()) {
+//                    scanner.nextLine();
+//                    System.out.println("Список пуст.");
+//                }
+//                for (Animal animal : animals) {
+//                    System.out.println(animal);
+//                }
+                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+                List<String[]> allAnimals = retriever.retrieveAllAnimals();
+
+                if (allAnimals.isEmpty()) {
+                    System.out.println("Нет записей в таблице.");
+                } else {
+                    String id = "animal_id";
+                    String type = "type";
+                    String name = "name";
+                    String age = "age";
+                    String weight = "weight";
+                    String color = "color";
+                    System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n", id, type, name, age, weight, color);
+                    System.out.println("-".repeat(82));
+                    for (String[] animalRow : allAnimals) {
+                        System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n",
+                                animalRow[0],
+                                animalRow[1],
+                                animalRow[2],
+                                animalRow[3],
+                                animalRow[4],
+                                animalRow[5]
+                        );
+                        System.out.println("-".repeat(82));
+                    }
                 }
             } else if (currentCommand == Command.ADD) {
                 AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
@@ -60,6 +72,16 @@ public class AnimalApp {
                 animal.setWeight(weight);
                 animal.setColor(ReadSelectColor.selectColor(scanner));
 
+                // добавляем животного в базу данных
+                InsertAnimals inserter = new InsertAnimals(ConnectionManager.getInstance());
+                inserter.insertAnimal(
+                        animalType.name(),
+                        animal.getName(),
+                        animal.getAge(),
+                        animal.getWeight(),
+                        String.valueOf(animal.getColor())
+                );
+
                 animals.add(animal);
                 animal.say();
 
@@ -69,5 +91,6 @@ public class AnimalApp {
                 }
             }
         }
+        ConnectionManager.getInstance().close();
     }
 }

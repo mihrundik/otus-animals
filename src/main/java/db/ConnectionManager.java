@@ -24,11 +24,14 @@ public class ConnectionManager {
     private ConnectionManager() throws SQLException {
         try {
             connection  = DriverManager.getConnection(
-                    "jdbc:postgresql://sql.otus.kartushin.su:5432/stage\n",
-                    "student",
-                    "student");
+//                    "jdbc:postgresql://postgres:iqtqniUnQaOBFGfyLHthOMMawoFDkAaL@shortline.proxy.rlwy.net:51726/railway",
+//                    "postgres",
+//                    "iqtqniUnQaOBFGfyLHthOMMawoFDkAaL");
+                     "jdbc:postgresql://sql.otus.kartushin.su:5432/stage",
+                     "student",
+                     "student");
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException("Ошибка подключения к базе данных: " + e.getMessage(), e);
         }
 
         try {
@@ -36,6 +39,11 @@ public class ConnectionManager {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    // для получения соединения
+    public Connection getConnection() {
+        return connection;
     }
 
     // для выполнения SELECT-запросов, возвращающих набор результатов
@@ -50,7 +58,7 @@ public class ConnectionManager {
     // для выполнения UPDATE, INSERT и DELETE-запросов, без возвращающих набор результатов
     public void executeUpdate(String query) {
         try {
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -64,4 +72,5 @@ public class ConnectionManager {
             throw new RuntimeException(e);
         }
     }
+
 }
