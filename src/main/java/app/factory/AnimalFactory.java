@@ -6,7 +6,7 @@ import app.birds.Duck;
 
 public class AnimalFactory {
 
-    public Animal create(AnimalType type) {
+    public static Animal create(AnimalType type) {
         if (type == null) {
             return null;
         }

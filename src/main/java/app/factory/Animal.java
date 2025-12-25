@@ -11,7 +11,7 @@ package app.factory;
 // (Возврат строки: «Привет! Меня зовут name, мне age лет (/год/года), я вешу - weight кг, мой цвет - color»)
 // лет или год, или года должно быть выбрано в зависимости от числа.
 
-public abstract class Animal {
+public class Animal {
 
     private String name;
     private int age;
