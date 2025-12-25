@@ -4,9 +4,8 @@ import app.factory.AnimalFactory;
 import app.factory.AnimalType;
 import app.utilities.*;
 import db.ConnectionManager;
-import db.dao.AnimalTable;
-import db.dao.RetrieveAnimals;
 import db.tools_db.InsertAnimals;
+import db.tools_db.RetrieveAnimals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,40 +24,29 @@ public class AnimalApp {
         while (currentCommand != Command.EXIT) {
             currentCommand = ReadCommand.getCommand(scanner);
             if (currentCommand == Command.LIST) {
-//                if (animals.isEmpty()) {
-//                    scanner.nextLine();
-//                    System.out.println("Список пуст.");
-//                }
-//                for (Animal animal : animals) {
-//                    System.out.println(animal);
-//                }
                 RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
                 List<String[]> allAnimals = retriever.retrieveAllAnimals();
 
                 if (allAnimals.isEmpty()) {
                     System.out.println("Нет записей в таблице.");
                 } else {
-                    String id = "animal_id";
-                    String type = "type";
-                    String name = "name";
-                    String age = "age";
-                    String weight = "weight";
-                    String color = "color";
-                    System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n", id, type, name, age, weight, color);
-                    System.out.println("-".repeat(82));
-                    for (String[] animalRow : allAnimals) {
-                        System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n",
-                                animalRow[0],
-                                animalRow[1],
-                                animalRow[2],
-                                animalRow[3],
-                                animalRow[4],
-                                animalRow[5]
-                        );
-                        System.out.println("-".repeat(82));
-                    }
+                    printTable(allAnimals);
                 }
-            } else if (currentCommand == Command.ADD) {
+            }
+            else if (currentCommand == Command.SORT) {
+                System.out.print("Выберите тип животного для сортировки (CAT, DOG, DUCK): ");
+                String selectedType = scanner.nextLine().toUpperCase().trim();
+
+                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+                List<String[]> sortedAnimals = retriever.retrieveByType(selectedType);
+
+                if (sortedAnimals.isEmpty()) {
+                    System.out.println("Нет записей в таблице.");
+                } else {
+                    printTable(sortedAnimals);
+                }
+            }
+            else if (currentCommand == Command.ADD) {
                 AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
                 Animal animal = AnimalFactory.create(animalType);
 
@@ -93,4 +81,23 @@ public class AnimalApp {
         }
         ConnectionManager.getInstance().close();
     }
+
+    //отдельно метод вывода таблицы для LIST и SORT
+    private static void printTable(List<String[]> data) {
+        String id = "animal_id";
+        String type = "type";
+        String name = "name";
+        String age = "age";
+        String weight = "weight";
+        String color = "color";
+        System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n", id, type, name, age, weight, color);
+        System.out.println("-".repeat(82));
+        for (String[] row : data) {
+            System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n",
+                    row[0], row[1], row[2], row[3], row[4], row[5]);
+            System.out.println("-".repeat(82));
+        }
+    }
+
+
 }

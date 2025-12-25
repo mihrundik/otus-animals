@@ -1,6 +1,8 @@
-package db.dao;
+package db.tools_db;
 
 import db.ConnectionManager;
+import db.dao.AnimalTable;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,11 +17,19 @@ public class RetrieveAnimals {
     }
 
     public List<String[]> retrieveAllAnimals() {
-        List<String[]> result = new ArrayList<>();
-        String sql = "SELECT * FROM " + AnimalTable.TABLE_NAME;
+        return retrieveByType(null); // если операция LIST, то NULL
+    }
 
-        try(ResultSet rs = connectionManager.executeQuery(sql)) {
-            while(rs.next()) {
+    public List<String[]> retrieveByType(String type) {
+        List<String[]> result = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM ").append(AnimalTable.TABLE_NAME);
+
+        if (type != null && !type.trim().isEmpty()) { // если указан тип
+            sql.append(" WHERE type='").append(type).append("'");
+        }
+
+        try (ResultSet rs = connectionManager.executeQuery(sql.toString())) {
+            while (rs.next()) {
                 String[] row = {
                         String.valueOf(rs.getInt("animal_id")),
                         rs.getString("type"),
@@ -30,7 +40,7 @@ public class RetrieveAnimals {
                 };
                 result.add(row);
             }
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
         return result;

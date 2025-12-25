@@ -137,8 +137,8 @@
 |                | SortingAnimals, UpdateAnimals, ConnectionManager                                                                |
 | **25.12.2025** | Разработанны функции для методов RetrieveAnimals и InsertAnimals                                                |
 |                | Добавлено исполнение классов RetrieveAnimals и InsertAnimals в AnimalApp                                        |
-|                |                                                                                                                 |
-|                |                                                                                                                 |
+| **28.12.2025** | Добавлена новая команда SORT, переопределенндля его класс RetrieveAnimals и удален из проекта SortingAnimals    |
+|                | Отдельно выделен метод выводов результатов обращения к RetrieveAnimals                                          |
 |                |                                                                                                                 |
 
 ---
