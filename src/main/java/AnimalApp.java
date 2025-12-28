@@ -32,21 +32,30 @@ public class AnimalApp {
                 } else {
                     printTable(allAnimals);
                 }
-            }
-            else if (currentCommand == Command.SORT) {
-                System.out.print("Выберите тип животного для сортировки (CAT, DOG, DUCK): ");
-                String selectedType = scanner.nextLine().toUpperCase().trim();
+            } else if (currentCommand == Command.SORT) {
+                AnimalType selectedType = ReadAnimalType.selectAnimalType(scanner);
 
                 RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
-                List<String[]> sortedAnimals = retriever.retrieveByType(selectedType);
+                List<String[]> sortedAnimals = retriever.retrieveByType(String.valueOf(selectedType));
 
                 if (sortedAnimals.isEmpty()) {
                     System.out.println("Нет записей в таблице.");
                 } else {
                     printTable(sortedAnimals);
                 }
-            }
-            else if (currentCommand == Command.ADD) {
+            } else if (currentCommand == Command.UPDATE) {
+                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+                List<String[]> allAnimals = retriever.retrieveAllAnimals();
+                printTable(allAnimals);
+
+                System.out.print("Выберите animal_id животного для изменения: ");
+                String selectedID = scanner.nextLine().trim();
+
+
+
+
+
+            } else if (currentCommand == Command.ADD) {
                 AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
                 Animal animal = AnimalFactory.create(animalType);
 

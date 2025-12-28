@@ -8,7 +8,8 @@ public enum Command {
     ADD,
     LIST,
     EXIT,
-    SORT;
+    SORT,
+    UPDATE;
 
     public static List<String> COMMAND = collectNames();
 
