@@ -21,6 +21,10 @@ public enum Color {
         this.value = value;
     }
 
+    public static Object stringColor(String trim) {
+        return trim;
+    }
+
     public String getValue() {
         return value;
     }

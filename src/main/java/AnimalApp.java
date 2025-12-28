@@ -8,6 +8,7 @@ import db.tools_db.InsertAnimals;
 import db.tools_db.RetrieveAnimals;
 import db.tools_db.UpdateAnimals;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +18,7 @@ import static db.tools_db.PrintTable.printTable;
 
 public class AnimalApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         List<Animal> animals = new ArrayList<>();
 
@@ -66,17 +67,15 @@ public class AnimalApp {
                 // устанавливаем новые параметры животных
                 animal.setName(ReadName.readName(scanner));
                 int age = ReadPositiveParam.readPositiveAge(scanner);
-                double weight = ReadPositiveParam.readPositiveDouble(scanner);
+                double weightD = ReadPositiveParam.readPositiveDouble(scanner);
+                String weightS = Double.toString(weightD).replace(',', '.');
                 animal.setColor(ReadSelectColor.selectColor(scanner));
 
-                String updatedData = String.format("%s,%d,%.2f,%s",
-                        animal.getName(),
-                        animal.getAge(),
-                        animal.getWeight(),
-                        animal.getColor()
-                );
+                String formattedData = String.format("%s,%d,%s,%s",
+                        animal.getName(), age, weightS, animal.getColor());
 
-                UpdateAnimals.update(selectedID, updatedData);
+                UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
+                updater.update(selectedID, formattedData);
 
             } else if (currentCommand == Command.ADD) {
                 animalType = ReadAnimalType.selectAnimalType(scanner);
