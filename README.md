@@ -134,10 +134,10 @@
 |                | добавлены в корневую папу папки main и java для работы с Maven;                                                 |
 |                | добавлен файл pom.xml с конфигурацией проекта для работы с БД.                                                  |                                                                      
 | **23.12.2025** | Добавлена сруктура dao и tools_db; добавлены классы AbstractTable, AnimalTable, InsertAnimals, RetrieveAnimals, |
-|                | SortingAnimals, UpdateAnimals, ConnectionManager                                                                |
+|                | SortingAnimals, db.tools_db.UpdateAnimals, ConnectionManager                                                                |
 | **25.12.2025** | Разработанны функции для методов RetrieveAnimals и InsertAnimals                                                |
 |                | Добавлено исполнение классов RetrieveAnimals и InsertAnimals в AnimalApp                                        |
-| **28.12.2025** | Добавлена новая команда SORT, переопределенндля его класс RetrieveAnimals и удален из проекта SortingAnimals    |
+| **28.12.2025** | Добавлена новая команда SORT, переопределен для него класс RetrieveAnimals и удален из проекта SortingAnimals   |
 |                | Отдельно выделен метод выводов результатов обращения к RetrieveAnimals                                          |
 |                | Преиспользована ReadAnimalType для SORT с целью опредния не корректного ввода                                   |
 |                |                                                                                                                 |

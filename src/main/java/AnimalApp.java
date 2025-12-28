@@ -6,10 +6,13 @@ import app.utilities.*;
 import db.ConnectionManager;
 import db.tools_db.InsertAnimals;
 import db.tools_db.RetrieveAnimals;
+import db.tools_db.UpdateAnimals;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static db.tools_db.PrintTable.printTable;
 
 
 public class AnimalApp {
@@ -21,8 +24,13 @@ public class AnimalApp {
         Scanner scanner = new Scanner(System.in);
         Command currentCommand = null;
 
-        while (currentCommand != Command.EXIT) {
+        while (true) {
             currentCommand = ReadCommand.getCommand(scanner);
+            AnimalType animalType;
+            if (currentCommand == Command.EXIT) {
+                ConnectionManager.getInstance().close();
+                break;
+            }
             if (currentCommand == Command.LIST) {
                 RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
                 List<String[]> allAnimals = retriever.retrieveAllAnimals();
@@ -49,14 +57,29 @@ public class AnimalApp {
                 printTable(allAnimals);
 
                 System.out.print("Выберите animal_id животного для изменения: ");
-                String selectedID = scanner.nextLine().trim();
+                String inputId = scanner.nextLine().trim();
+                int selectedID = Integer.parseInt(inputId);
 
+                animalType = ReadAnimalType.selectAnimalType(scanner);
+                Animal animal = AnimalFactory.create(animalType);
 
+                // устанавливаем новые параметры животных
+                animal.setName(ReadName.readName(scanner));
+                int age = ReadPositiveParam.readPositiveAge(scanner);
+                double weight = ReadPositiveParam.readPositiveDouble(scanner);
+                animal.setColor(ReadSelectColor.selectColor(scanner));
 
+                String updatedData = String.format("%s,%d,%.2f,%s",
+                        animal.getName(),
+                        animal.getAge(),
+                        animal.getWeight(),
+                        animal.getColor()
+                );
 
+                UpdateAnimals.update(selectedID, updatedData);
 
             } else if (currentCommand == Command.ADD) {
-                AnimalType animalType = ReadAnimalType.selectAnimalType(scanner);
+                animalType = ReadAnimalType.selectAnimalType(scanner);
                 Animal animal = AnimalFactory.create(animalType);
 
                 // определяем и устанавливаем параметры животных
@@ -88,25 +111,5 @@ public class AnimalApp {
                 }
             }
         }
-        ConnectionManager.getInstance().close();
     }
-
-    //отдельно метод вывода таблицы для LIST и SORT
-    private static void printTable(List<String[]> data) {
-        String id = "animal_id";
-        String type = "type";
-        String name = "name";
-        String age = "age";
-        String weight = "weight";
-        String color = "color";
-        System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n", id, type, name, age, weight, color);
-        System.out.println("-".repeat(82));
-        for (String[] row : data) {
-            System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n",
-                    row[0], row[1], row[2], row[3], row[4], row[5]);
-            System.out.println("-".repeat(82));
-        }
-    }
-
-
 }
