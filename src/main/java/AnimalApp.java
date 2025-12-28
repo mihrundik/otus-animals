@@ -4,6 +4,7 @@ import app.factory.AnimalFactory;
 import app.factory.AnimalType;
 import app.utilities.*;
 import db.ConnectionManager;
+import db.dao.AnimalTable;
 import db.tools_db.InsertAnimals;
 import db.tools_db.RetrieveAnimals;
 import db.tools_db.UpdateAnimals;
@@ -20,6 +21,15 @@ public class AnimalApp {
 
     public static void main(String[] args) throws SQLException {
 
+        try {
+            ConnectionManager connectionManager = ConnectionManager.getInstance();
+
+            AnimalTable animalTable = new AnimalTable(connectionManager);
+
+            animalTable.createAnimalsTableIfNotExist();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         List<Animal> animals = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);

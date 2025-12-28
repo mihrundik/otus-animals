@@ -12,11 +12,11 @@ public class PrintTable {
         String weight = "weight";
         String color = "color";
         System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n", id, type, name, age, weight, color);
-        System.out.println("-".repeat(82));
+        System.out.println("-".repeat(90));
         for (String[] row : data) {
             System.out.printf(" %-10s | %-10s | %-20s | %-10s | %-10s | %-10s\n",
                     row[0], row[1], row[2], row[3], row[4], row[5]);
-            System.out.println("-".repeat(82));
+            System.out.println("-".repeat(90));
         }
     }
 }

@@ -35,8 +35,6 @@ public abstract class AbstractTable {
         if (!exists(tableName)) {
             createTable(createSql);
             System.out.println("Таблица " + tableName + " успешно создана.");
-        } else {
-            System.out.println("Таблица " + tableName + " уже существует.");
         }
     }
 }
