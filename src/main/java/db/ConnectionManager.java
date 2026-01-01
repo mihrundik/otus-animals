@@ -1,61 +1,22 @@
 package db;
 
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.sql.*;
-import java.util.Calendar;
+
+import static db.tools_db.ProviderConfig.loadConfig;
+import static db.tools_db.ProviderConfig.readConfig;
 
 public class ConnectionManager {
 
-    private final Connection connection;
-    private final Statement statement;
+    private Connection connection;
+    private Statement statement;
+    private static volatile ConnectionManager instance;
 
-    private static ConnectionManager instance;
+    public ConnectionManager(String envName) throws IOException {
 
-    private static final String CONF_FILE = "configsDB.conf";
-
-    public static ConnectionManager getInstance() {
-        if (instance == null) {
-            try {
-                instance = new ConnectionManager();
-            } catch (SQLException | IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return instance;
-    }
-
-    // обращаемся к файлу
-    private Config loadConfig() throws IOException {
-        Config config = ConfigFactory.load(CONF_FILE);
-
-        if (!config.hasPath("dbParams")) {
-            throw new FileNotFoundException("Отсутствует секция 'dbParams' в файле конфигурации '" + CONF_FILE + "'.");
-        }
-        return config.getConfig("dbParams");
-    }
-
-    private ConnectionManager() throws SQLException, IOException {
         Config config = loadConfig();
-
-        // получаем необходимые значения из конфига по имени и времени
-        String envName = System.getenv("ENV_NAME");
-        if (envName == null || !config.hasPath(envName)) {
-            Calendar calendar = Calendar.getInstance(); // берем библиотеку календаря
-            int currentMinute = calendar.get(Calendar.MINUTE); // получим текущие минуты
-
-            // выбираем БД по текущему времени внутри часа
-            if (currentMinute >= 0 && currentMinute <= 19) {
-                envName = "mysql";
-            } else if (currentMinute >= 20 && currentMinute <= 39) {
-                envName = "postgre";
-            }
-            else {
-                envName = "kartushin";
-            };
-        }
 
         Config envConfig = config.getConfig(envName);
         String url = envConfig.getString("url");
@@ -68,16 +29,34 @@ public class ConnectionManager {
 
         try {
             connection = DriverManager.getConnection(url, login, password);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Ошибка подключения к базе данных: " + e.getMessage(), e);
         }
 
         try {
             statement = connection.createStatement();
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка создания statement ", e);
         }
     }
+
+    public ConnectionManager() {
+
+    }
+
+    // реализация Singleton - гарантия создания одного экземпляра класса - synchronized - метод сможет выполняться только одним потоком
+    public static synchronized ConnectionManager getInstance() {
+        if (instance == null) {
+            try {
+                String envName = readConfig();
+                instance = new ConnectionManager(envName);
+            } catch (IOException e) {
+                throw new RuntimeException("Не удалось загрузить конфигурацию ", e);
+            }
+        }
+        return instance;
+    }
+
 
     public Connection getConnection() {
         return connection;
