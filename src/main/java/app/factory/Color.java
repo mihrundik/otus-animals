@@ -8,12 +8,21 @@ public enum Color {
     WHITE("белый"),
     BROWN("коричневый"),
     GRAY("серый"),
-    BLACK("черный");
+    BLACK("черный"),
+    YELLOW("желтый"),
+    FAWN("палевый"),
+    CHAMPAGNE("цвета шампанского"),
+    TORTOISESHELL("черепаховый окрас")
+    ;
 
     private String value;
 
     Color(String value) {
         this.value = value;
+    }
+
+    public static Object stringColor(String trim) {
+        return trim;
     }
 
     public String getValue() {

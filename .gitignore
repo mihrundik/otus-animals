@@ -1,7 +1,7 @@
 ### IntelliJ IDEA ###
 out/
 .idea/
-.xml
+target/
 
 ### Mac OS ###
 .DS_Store
