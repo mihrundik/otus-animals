@@ -1,22 +1,24 @@
-package db.tools_db;
+package db;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 
 public interface ProviderConfig {
 
+    // Используйте имя файла, без абсолютного пути
     String CONF_FILE = "configsDB.conf";
 
     // обращаемся к файлу
     static Config loadConfig() throws IOException {
+        // Загружаем конфигурацию из файла в classpath
         Config config = ConfigFactory.load(CONF_FILE);
 
+        // Проверяем наличие секции 'dbParams'
         if (!config.hasPath("dbParams")) {
-            throw new FileNotFoundException("Отсутствует секция 'dbParams' в файле конфигурации '" + CONF_FILE + "'.");
+            throw new IOException("Отсутствует секция 'dbParams' в файле конфигурации '" + CONF_FILE + "'.");
         }
         return config.getConfig("dbParams");
     }
@@ -31,9 +33,9 @@ public interface ProviderConfig {
             int currentMinute = calendar.get(Calendar.MINUTE); // получим текущие минуты
 
             // выбираем БД по текущему времени внутри часа
-            if (currentMinute >= 0 && currentMinute <= 19) {
+            if (currentMinute <= 19) {
                 envName = "mysql";
-            } else if (currentMinute >= 20 && currentMinute <= 39) {
+            } else if (currentMinute <= 39) {
                 envName = "postgre";
             } else {
                 envName = "kartushin";

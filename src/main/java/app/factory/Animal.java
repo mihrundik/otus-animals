@@ -11,6 +11,8 @@ package app.factory;
 // (Возврат строки: «Привет! Меня зовут name, мне age лет (/год/года), я вешу - weight кг, мой цвет - color»)
 // лет или год, или года должно быть выбрано в зависимости от числа.
 
+import java.util.prefs.Preferences;
+
 public class Animal {
 
     private String name;
@@ -94,6 +96,10 @@ public class Animal {
             return "года";
         }
         return "лет";
+    }
+
+    public Preferences getType() {
+        return null;
     }
 }
 

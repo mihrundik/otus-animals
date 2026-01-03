@@ -5,119 +5,113 @@ import app.factory.AnimalType;
 import app.utilities.*;
 import db.ConnectionManager;
 import db.dao.AnimalTable;
-import db.tools_db.InsertAnimals;
-import db.tools_db.RetrieveAnimals;
-import db.tools_db.UpdateAnimals;
+import db.dao.tools_db.InsertAnimals;
+import db.dao.tools_db.RetrieveAnimals;
+import db.dao.tools_db.UpdateAnimals;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-import static db.tools_db.PrintTable.printTable;
+import static db.dao.tools_db.PrintTable.printTable;
 
 
-public class AnimalApp {
+void main() throws SQLException {
 
-    public static void main(String[] args) throws SQLException {
+    try {
+        ConnectionManager connectionManager = ConnectionManager.getInstance();
 
-        try {
-            ConnectionManager connectionManager = ConnectionManager.getInstance();
+        AnimalTable animalTable = new AnimalTable(connectionManager);
 
-            AnimalTable animalTable = new AnimalTable(connectionManager);
+        animalTable.createAnimalsTableIfNotExist();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+    List<Animal> animals = new ArrayList<>();
 
-            animalTable.createAnimalsTableIfNotExist();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    Scanner scanner = new Scanner(System.in);
+    Command currentCommand = null;
+
+    while (true) {
+        currentCommand = ReadCommand.getCommand(scanner);
+        AnimalType animalType;
+        if (currentCommand == Command.EXIT) {
+            ConnectionManager.getInstance().close();
+            break;
         }
-        List<Animal> animals = new ArrayList<>();
+        if (currentCommand == Command.LIST) {
+            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            List<String[]> allAnimals = retriever.retrieveAllAnimals();
 
-        Scanner scanner = new Scanner(System.in);
-        Command currentCommand = null;
-
-        while (true) {
-            currentCommand = ReadCommand.getCommand(scanner);
-            AnimalType animalType;
-            if (currentCommand == Command.EXIT) {
-                ConnectionManager.getInstance().close();
-                break;
-            }
-            if (currentCommand == Command.LIST) {
-                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
-                List<String[]> allAnimals = retriever.retrieveAllAnimals();
-
-                if (allAnimals.isEmpty()) {
-                    System.out.println("Нет записей в таблице.");
-                } else {
-                    printTable(allAnimals);
-                }
-            } else if (currentCommand == Command.SORT) {
-                AnimalType selectedType = ReadAnimalType.selectAnimalType(scanner);
-
-                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
-                List<String[]> sortedAnimals = retriever.retrieveByType(String.valueOf(selectedType));
-
-                if (sortedAnimals.isEmpty()) {
-                    System.out.println("Нет записей в таблице.");
-                } else {
-                    printTable(sortedAnimals);
-                }
-            } else if (currentCommand == Command.UPDATE) {
-                RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
-                List<String[]> allAnimals = retriever.retrieveAllAnimals();
+            if (allAnimals.isEmpty()) {
+                IO.println("Нет записей в таблице.");
+            } else {
                 printTable(allAnimals);
+            }
+        } else if (currentCommand == Command.SORT) {
+            AnimalType selectedType = ReadAnimalType.selectAnimalType(scanner);
 
-                System.out.print("Выберите animal_id животного для изменения: ");
-                String inputId = scanner.nextLine().trim();
-                int selectedID = Integer.parseInt(inputId);
+            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            List<String[]> sortedAnimals = retriever.retrieveByType(String.valueOf(selectedType));
 
-                animalType = ReadAnimalType.selectAnimalType(scanner);
-                Animal animal = AnimalFactory.create(animalType);
+            if (sortedAnimals.isEmpty()) {
+                IO.println("Нет записей в таблице.");
+            } else {
+                printTable(sortedAnimals);
+            }
+        } else if (currentCommand == Command.UPDATE) {
+            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            List<String[]> allAnimals = retriever.retrieveAllAnimals();
+            printTable(allAnimals);
 
-                // устанавливаем новые параметры животных
-                animal.setName(ReadName.readName(scanner));
-                int age = ReadPositiveParam.readPositiveAge(scanner);
-                double weightD = ReadPositiveParam.readPositiveDouble(scanner);
-                String weightS = Double.toString(weightD).replace(',', '.');
-                animal.setColor(ReadSelectColor.selectColor(scanner));
+            IO.print("Выберите animal_id животного для изменения: ");
+            String inputId = scanner.nextLine().trim();
+            int selectedID = Integer.parseInt(inputId);
 
-                String formattedData = String.format("%s,%d,%s,%s",
-                        animal.getName(), age, weightS, animal.getColor());
+            animalType = ReadAnimalType.selectAnimalType(scanner);
+            Animal animal = AnimalFactory.create(animalType);
 
-                UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
-                updater.update(selectedID, formattedData);
+            // устанавливаем новые параметры животных
+            animal.setName(ReadName.readName(scanner));
+            int age = ReadPositiveParam.readPositiveAge(scanner);
+            double weightD = ReadPositiveParam.readPositiveDouble(scanner);
+            String weightS = Double.toString(weightD).replace(',', '.');
+            animal.setColor(ReadSelectColor.selectColor(scanner));
 
-            } else if (currentCommand == Command.ADD) {
-                animalType = ReadAnimalType.selectAnimalType(scanner);
-                Animal animal = AnimalFactory.create(animalType);
+            String formattedData = String.format("%s,%d,%s,%s",
+                    animal.getName(), age, weightS, animal.getColor());
 
-                // определяем и устанавливаем параметры животных
-                animal.setName(ReadName.readName(scanner));
+            UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
+            updater.update(selectedID, formattedData);
 
-                int age = ReadPositiveParam.readPositiveAge(scanner);
-                double weight = ReadPositiveParam.readPositiveDouble(scanner);
+        } else if (currentCommand == Command.ADD) {
+            animalType = ReadAnimalType.selectAnimalType(scanner);
+            Animal animal = AnimalFactory.create(animalType);
 
-                animal.setAge(age);
-                animal.setWeight(weight);
-                animal.setColor(ReadSelectColor.selectColor(scanner));
+            // определяем и устанавливаем параметры животных
+            animal.setName(ReadName.readName(scanner));
 
-                // добавляем животного в базу данных
-                InsertAnimals inserter = new InsertAnimals(ConnectionManager.getInstance());
-                inserter.insertAnimal(
-                        animalType.name(),
-                        animal.getName(),
-                        animal.getAge(),
-                        animal.getWeight(),
-                        String.valueOf(animal.getColor())
-                );
+            int age = ReadPositiveParam.readPositiveAge(scanner);
+            double weight = ReadPositiveParam.readPositiveDouble(scanner);
 
-                animals.add(animal);
-                animal.say();
+            animal.setAge(age);
+            animal.setWeight(weight);
+            animal.setColor(ReadSelectColor.selectColor(scanner));
 
-                // вызов интерфейса для утки
-                if (animal instanceof Duck) {
-                    ((Duck) animal).fly();
-                }
+            // добавляем животного в базу данных
+            InsertAnimals inserter = new InsertAnimals(ConnectionManager.getInstance());
+            inserter.insertAnimal(
+                    animal.getType().name(),
+                    animal.getName(),
+                    animal.getAge(),
+                    animal.getWeight(),
+                    String.valueOf(animal.getColor())
+            );
+
+            animals.add(animal);
+            animal.say();
+
+            // вызов интерфейса для утки
+            if (animal instanceof Duck) {
+                ((Duck) animal).fly();
             }
         }
     }

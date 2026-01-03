@@ -5,8 +5,8 @@ import com.typesafe.config.Config;
 import java.io.IOException;
 import java.sql.*;
 
-import static db.tools_db.ProviderConfig.loadConfig;
-import static db.tools_db.ProviderConfig.readConfig;
+import static db.ProviderConfig.loadConfig;
+import static db.ProviderConfig.readConfig;
 
 public class ConnectionManager {
 
