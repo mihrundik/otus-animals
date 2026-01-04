@@ -33,14 +33,15 @@ public interface ProviderConfig {
             int currentMinute = calendar.get(Calendar.MINUTE); // получим текущие минуты
 
             // выбираем БД по текущему времени внутри часа
-            if (currentMinute <= 19) {
+
+            if (currentMinute <= 30) {
                 envName = "mysql";
-            } else if (currentMinute <= 39) {
-                envName = "postgre";
             } else {
                 envName = "kartushin";
             }
         }
+
         return envName;
     }
+
 }

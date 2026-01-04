@@ -8,6 +8,7 @@ import app.factory.AnimalType;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class InsertAnimals extends AbstractTable {
@@ -28,16 +29,20 @@ public class InsertAnimals extends AbstractTable {
     }
 
     @Override
-    protected int updateData(Object data) throws SQLException {
-        return 0;
+    protected void executeUpdate(int id, String data) throws SQLException {
     }
 
-    @Override
-    protected void executeUpdate(String sql) throws SQLException {}
 
-
-    public void insertAnimal(Animal animal) {
-        insertAnimal(animal.getType().name(), animal.getName(), animal.getAge(), animal.getWeight(), String.valueOf(animal.getColor()));
+    public void insertAnimal(Animal animal) throws SQLException {
+        executeInTransaction(() -> { //запускаем транзакцию
+            insertAnimal(
+                    animal.getType().name(),
+                    animal.getName(),
+                    animal.getAge(),
+                    animal.getWeight(),
+                    String.valueOf(animal.getColor())
+            );
+        });
     }
 
     public void insertAnimal(String type, String name, int age, double weight, String color) {
@@ -51,7 +56,7 @@ public class InsertAnimals extends AbstractTable {
             stmt.setDouble(4, weight);
             stmt.setString(5, color);
 
-            stmt.executeUpdate(); // Выполняем SQL-запрос
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при вставке животного в базу данных.", e);
         }

@@ -6,7 +6,7 @@ import app.utilities.*;
 import db.ConnectionManager;
 import db.dao.AnimalTable;
 import db.dao.tools_db.InsertAnimals;
-import db.dao.tools_db.RetrieveAnimals;
+import db.dao.tools_db.ReadAnimals;
 import db.dao.tools_db.UpdateAnimals;
 
 import java.sql.SQLException;
@@ -38,7 +38,7 @@ void main() throws SQLException {
             break;
         }
         if (currentCommand == Command.LIST) {
-            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            ReadAnimals retriever = new ReadAnimals(ConnectionManager.getInstance());
             List<String[]> allAnimals = retriever.retrieveAllAnimals();
 
             if (allAnimals.isEmpty()) {
@@ -49,7 +49,7 @@ void main() throws SQLException {
         } else if (currentCommand == Command.SORT) {
             AnimalType selectedType = ReadAnimalType.selectAnimalType(scanner);
 
-            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            ReadAnimals retriever = new ReadAnimals(ConnectionManager.getInstance());
             List<String[]> sortedAnimals = retriever.retrieveByType(String.valueOf(selectedType));
 
             if (sortedAnimals.isEmpty()) {
@@ -58,13 +58,11 @@ void main() throws SQLException {
                 printTable(sortedAnimals);
             }
         } else if (currentCommand == Command.UPDATE) {
-            RetrieveAnimals retriever = new RetrieveAnimals(ConnectionManager.getInstance());
+            ReadAnimals retriever = new ReadAnimals(ConnectionManager.getInstance());
             List<String[]> allAnimals = retriever.retrieveAllAnimals();
             printTable(allAnimals);
 
-            IO.print("Выберите animal_id животного для изменения: ");
-            String inputId = scanner.nextLine().trim();
-            int selectedID = Integer.parseInt(inputId);
+            int inputId = ReadPositiveParam.readPositiveId(scanner);
 
             animalType = ReadAnimalType.selectAnimalType(scanner);
             Animal animal = AnimalFactory.create(animalType);
@@ -80,7 +78,7 @@ void main() throws SQLException {
                     animal.getName(), age, weightS, animal.getColor());
 
             UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
-            updater.update(selectedID, formattedData);
+            updater.update(inputId, formattedData);
 
         } else if (currentCommand == Command.ADD) {
             animalType = ReadAnimalType.selectAnimalType(scanner);

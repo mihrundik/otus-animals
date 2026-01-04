@@ -4,6 +4,7 @@ import db.AnimalTColumns;
 import db.ConnectionManager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AnimalTable extends AbstractTable {
     public static final String TABLE_NAME = "table_animals_kozhevnikova";
@@ -14,12 +15,10 @@ public class AnimalTable extends AbstractTable {
 
     @Override
     protected void insertData(Object data) throws SQLException {
-
     }
 
     @Override
-    protected int updateData(Object data) throws SQLException {
-        return 0;
+    protected void executeUpdate(int id, String data) throws SQLException {
     }
 
     public void createAnimalsTableIfNotExist() throws SQLException {
@@ -53,13 +52,6 @@ public class AnimalTable extends AbstractTable {
                 System.out.println("Тип данных не поддерживается.");
         }
         return "";
-    }
-
-    @Override
-    protected void executeUpdate(String sql) throws SQLException {
-        try (var conn = connectionManager.getConnection(); var stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        }
     }
 
 }

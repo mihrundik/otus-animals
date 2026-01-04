@@ -29,4 +29,17 @@ public class ReadPositiveParam {
             }
         }
     }
+
+    public static int readPositiveId(Scanner scanner) {
+        while (true) {
+            System.out.print("Выберите animal_id животного для изменения: ");
+            String input = scanner.nextLine().trim();
+
+            if (input.matches("[1-9][0-9]*")) {
+                return Integer.parseInt(input);
+            } else {
+                System.out.println("Id должен быть положительным целым числом больше нуля.");
+            }
+        }
+    }
 }

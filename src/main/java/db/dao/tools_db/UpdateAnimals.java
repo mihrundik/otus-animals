@@ -2,17 +2,35 @@ package db.dao.tools_db;
 
 import app.factory.Color;
 import db.ConnectionManager;
+import db.dao.AbstractTable;
 import db.dao.AnimalTable;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateAnimals {
+public class UpdateAnimals extends AbstractTable {
 
     private static ConnectionManager connectionManager;
 
     public UpdateAnimals(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
+        super(connectionManager);
+        UpdateAnimals.connectionManager = connectionManager;
+    }
+
+    @Override
+    protected void insertData(Object data) throws SQLException {
+
+    }
+
+    @Override
+    protected void executeUpdate(int id, String data) throws SQLException {
+        executeInTransaction(() -> { // обновление в транзакции
+            try {
+                update(id, data);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public boolean update(int id, String data) throws SQLException {
@@ -21,10 +39,6 @@ public class UpdateAnimals {
         try (PreparedStatement stmt = connectionManager.getConnection().prepareStatement(sql)) {
             // Разделяем строку на части
             String[] parts = data.split(",");
-
-//            for (int i = 0; i < parts.length; i++) {  // отладочная
-//                System.out.println(parts[i]);
-//            }
 
             stmt.setString(1, parts[0].trim());
             stmt.setInt(2, Integer.parseInt(parts[1].trim()));
@@ -37,6 +51,4 @@ public class UpdateAnimals {
         }
     }
 
-    public void format(String s, String name, int age, double weight, Color color) {
-    }
 }

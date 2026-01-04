@@ -41,26 +41,24 @@ public abstract class AbstractTable {
 
     // CRUD
     protected abstract void insertData(Object data) throws SQLException;
-    protected abstract int updateData(Object data) throws SQLException;
-
-    protected List<Object> readData(String whereClause) throws SQLException {
+    protected abstract void executeUpdate(int id, String data) throws SQLException;  // принимает строку для изменения по ИД
+    protected List<String[]> readData(String type) throws SQLException {
         return null;
     }
 
 
     // работа с транзакциями
-    protected void executeInTransaction(Runnable action) throws SQLException {
-        connectionManager.getConnection().setAutoCommit(false);
+    public void executeInTransaction(Runnable action) throws SQLException {
+        connectionManager.getConnection().setAutoCommit(false); // начиная транзакцию отключаем автокоммит на случай работы с oracle
         try {
             action.run();
-            connectionManager.getConnection().commit();
+            connectionManager.getConnection().commit(); // при успешном завершении транзакции коммитим
         } catch (SQLException e) {
-            connectionManager.getConnection().rollback();
+            connectionManager.getConnection().rollback(); // откатываем при неуспешном
             throw e;
         } finally {
-            connectionManager.getConnection().setAutoCommit(true);
+            connectionManager.getConnection().setAutoCommit(true); // возвращаем автокоммит
         }
     }
 
-    protected abstract void executeUpdate(String sql) throws SQLException;
 }
