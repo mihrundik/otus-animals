@@ -1,4 +1,4 @@
-package db.tools_db;
+package db.dao.tools_db;
 
 import java.util.List;
 

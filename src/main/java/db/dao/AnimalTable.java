@@ -11,18 +11,45 @@ public class AnimalTable extends AbstractTable {
         super(connectionManager);
     }
 
-    public void createAnimalsTableIfNotExist() throws SQLException {
-        String createTableSQL =
-                "CREATE TABLE " + TABLE_NAME + " (" +
-                        "animal_id SERIAL PRIMARY KEY," +
-                        "type VARCHAR(20)," +
-                        "name VARCHAR(50)," +
-                        "age INT," +
-                        "weight DOUBLE PRECISION," +
-                        "color VARCHAR(20)" +
-                        ")";
+    @Override
+    protected void insertData(Object data) throws SQLException {
+    }
 
+    @Override
+    protected void executeUpdate(int id, String data) throws SQLException {
+    }
+
+    public void createAnimalsTableIfNotExist() throws SQLException {
+        StringBuilder columnsDefinition = new StringBuilder();
+
+        for (AnimalTColumns field : AnimalTColumns.values()) {
+            if (field != AnimalTColumns.ANIMAL_ID) {
+                columnsDefinition.append(field.getFieldName()).append(" ").append(getColumnDefinition(field)).append(",");
+            } else {
+                columnsDefinition.append(field.getFieldName()).append(" SERIAL PRIMARY KEY").append(",");
+            }
+        }
+
+        columnsDefinition.setLength(columnsDefinition.length() - 1); // удаляем последний знак - ", "
+
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + columnsDefinition + ");";
         createTableIfNotExists(TABLE_NAME, createTableSQL);
+    }
+
+    private String getColumnDefinition(AnimalTColumns field) {
+        switch (field) {
+            case TYPE:
+            case NAME:
+            case COLOR:
+                return "VARCHAR(50)";
+            case AGE:
+                return "INT";
+            case WEIGHT:
+                return "DOUBLE PRECISION";
+            default:
+                System.out.println("Тип данных не поддерживается.");
+        }
+        return "";
     }
 
 }

@@ -1,6 +1,7 @@
-package db.tools_db;
+package db.dao.tools_db;
 
 import db.ConnectionManager;
+import db.dao.AbstractTable;
 import db.dao.AnimalTable;
 
 import java.sql.ResultSet;
@@ -8,12 +9,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RetrieveAnimals {
+public class ReadAnimals extends AbstractTable {
 
     private final ConnectionManager connectionManager;
+    private String type;
 
-    public RetrieveAnimals(ConnectionManager connectionManager) {
+    public ReadAnimals(ConnectionManager connectionManager) {
+        super(connectionManager);
         this.connectionManager = connectionManager;
+    }
+
+    @Override
+    protected void insertData(Object data) throws SQLException {
+
+    }
+
+    @Override
+    protected void executeUpdate(int id, String data) throws SQLException {
+
+    }
+
+    @Override
+    protected List<String[]> readData(String type) throws SQLException {
+        this.type = type;
+        return retrieveByType(type);
     }
 
     public List<String[]> retrieveAllAnimals() {

@@ -5,9 +5,10 @@ import db.ConnectionManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class AbstractTable {
-    private final ConnectionManager connectionManager;
+    final ConnectionManager connectionManager;
 
     public AbstractTable(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
@@ -37,4 +38,27 @@ public abstract class AbstractTable {
             System.out.println("Таблица " + tableName + " успешно создана.");
         }
     }
+
+    // CRUD
+    protected abstract void insertData(Object data) throws SQLException;
+    protected abstract void executeUpdate(int id, String data) throws SQLException;  // принимает строку для изменения по ИД
+    protected List<String[]> readData(String type) throws SQLException {
+        return null;
+    }
+
+
+    // работа с транзакциями
+    public void executeInTransaction(Runnable action) throws SQLException {
+        connectionManager.getConnection().setAutoCommit(false); // начиная транзакцию отключаем автокоммит на случай работы с oracle
+        try {
+            action.run();
+            connectionManager.getConnection().commit(); // при успешном завершении транзакции коммитим
+        } catch (SQLException e) {
+            connectionManager.getConnection().rollback(); // откатываем при неуспешном
+            throw e;
+        } finally {
+            connectionManager.getConnection().setAutoCommit(true); // возвращаем автокоммит
+        }
+    }
+
 }
