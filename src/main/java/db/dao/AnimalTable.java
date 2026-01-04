@@ -1,10 +1,8 @@
 package db.dao;
 
-import db.AnimalTColumns;
 import db.ConnectionManager;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class AnimalTable extends AbstractTable {
     public static final String TABLE_NAME = "table_animals_kozhevnikova";

@@ -1,4 +1,4 @@
-package db;
+package db.dao;
 
 public enum AnimalTColumns {
     ANIMAL_ID("animal_id"),

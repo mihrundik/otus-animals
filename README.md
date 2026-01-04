@@ -148,7 +148,7 @@
 |                | В класс InsertAnimals добавлено наследование от AbstractTable и добавлено переопределение метода                         |
 | **04.01.2026** | В классы ReadAnimals, UpdateAnimals добавлено наследование AbstractTable и добавлено переопределение методов             |
 |                | Добавлена проверка animal_id на корректность в класс ReadPositiveParam                                                   |
-|                |                                                                                                                          |
+|                | Перечисление AnimalTColumns перенесено в dao                                                                             |
 |                |                                                                                                                          |
 |                |                                                                                                                          |
 |                |                                                                                                                          |
