@@ -1,12 +1,13 @@
 package app.birds;
 
-//5) Создайте класс Duck, унаследуйте его от Animal, реализуйте интерфейс Flying.
-//Переопределить метод Say (Вывод на экран: «Кря»).
-//Реализовать метод Fly (Вывод на экран: «Я лечу»).
-
 import app.factory.Animal;
+import app.factory.AnimalType;
 
 public class Duck extends Animal implements Flying {
+
+    public Duck(AnimalType type) {
+        super(type);
+    }
 
     @Override
     public void say() {

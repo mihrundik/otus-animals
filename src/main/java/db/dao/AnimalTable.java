@@ -3,6 +3,7 @@ package db.dao;
 import db.ConnectionManager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class AnimalTable extends AbstractTable {
     public static final String TABLE_NAME = "table_animals_kozhevnikova";
@@ -16,7 +17,25 @@ public class AnimalTable extends AbstractTable {
     }
 
     @Override
-    protected void executeUpdate(int id, String data) throws SQLException {
+    protected void updateData(int id, String data) throws SQLException {
+    }
+
+    @Override
+    protected List<String[]> readData(String type) throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    protected void createTable(String sqlCreateCommand) throws SQLException {
+
+    }
+
+    @Override
+    protected void deleteData(int id) throws SQLException {
+
+    }
+
+    private void createTableIfNotExists(String tableName, String createTableSQL) {
     }
 
     public void createAnimalsTableIfNotExist() throws SQLException {

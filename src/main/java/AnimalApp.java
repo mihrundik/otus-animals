@@ -11,7 +11,7 @@ import db.dao.tools_db.UpdateAnimals;
 
 import java.sql.SQLException;
 
-import static db.dao.tools_db.PrintTable.printTable;
+import static app.utilities.PrintTable.printTable;
 
 
 void main() throws SQLException {

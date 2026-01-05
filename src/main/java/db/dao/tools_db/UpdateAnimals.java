@@ -7,6 +7,7 @@ import db.dao.AnimalTable;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UpdateAnimals extends AbstractTable {
 
@@ -23,7 +24,22 @@ public class UpdateAnimals extends AbstractTable {
     }
 
     @Override
-    protected void executeUpdate(int id, String data) throws SQLException {
+    protected List<String[]> readData(String type) throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    protected void createTable(String sqlCreateCommand) throws SQLException {
+
+    }
+
+    @Override
+    protected void deleteData(int id) throws SQLException {
+
+    }
+
+    @Override
+    protected void updateData(int id, String data) throws SQLException {
         executeInTransaction(() -> { // обновление в транзакции
             try {
                 update(id, data);
