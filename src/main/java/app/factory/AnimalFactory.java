@@ -10,20 +10,15 @@ public class AnimalFactory {
         if (type == null) {
             return null;
         }
-        if (type == AnimalType.CAT) {
-            return new Cat();
-        }
-        if (type == AnimalType.DOG) {
-            return new Dog();
-        }
-        if (type == AnimalType.DUCK) {
-            return new Duck();
-        }
-        try {
-            throw new IllegalAccessException("Неожидаемый тип животного: " + type);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        switch (type) {
+            case CAT:
+                return new Cat(type); // Pass the type
+            case DOG:
+                return new Dog(type); // Pass the type
+            case DUCK:
+                return new Duck(type); // Pass the type
+            default:
+                throw new IllegalArgumentException("Неожидаемый тип животного: " + type);
         }
     }
-
 }

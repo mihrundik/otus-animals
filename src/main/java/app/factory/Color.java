@@ -12,8 +12,7 @@ public enum Color {
     YELLOW("желтый"),
     FAWN("палевый"),
     CHAMPAGNE("цвета шампанского"),
-    TORTOISESHELL("черепаховый окрас")
-    ;
+    TORTOISESHELL("черепаховый окрас");
 
     private String value;
 

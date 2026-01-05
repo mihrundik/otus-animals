@@ -1,24 +1,16 @@
 package app.factory;
 
-//1) Создайте родительский класс Animal
-//Свойства: name, age, weight, color
-//Методы:Getter and Setter
-//Say (Вывод на экран: «Я говорю»)
-//Go (Вывод на экран: «Я иду»)
-//Drink (Вывод на экран: «Я пью»)
-//Eat (Вывод на экран: «Я ем»).
-//Переопределите метод toString.
-// (Возврат строки: «Привет! Меня зовут name, мне age лет (/год/года), я вешу - weight кг, мой цвет - color»)
-// лет или год, или года должно быть выбрано в зависимости от числа.
-
-import java.util.prefs.Preferences;
-
 public class Animal {
 
+    private final AnimalType type;
     private String name;
     private int age;
     private double weight;
     private Color color;
+
+    public Animal(AnimalType type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -54,12 +46,12 @@ public class Animal {
         this.color = color;
     }
 
-
     public void say() {
         System.out.println("Я говорю");
     }
 
-    public void fly() {};
+    public void fly() {
+    }
 
     public void go() {
         System.out.println("Я иду");
@@ -98,8 +90,8 @@ public class Animal {
         return "лет";
     }
 
-    public Preferences getType() {
-        return null;
+    public AnimalType getType() {
+        return type;
     }
 }
 
