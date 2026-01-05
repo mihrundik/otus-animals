@@ -1,9 +1,9 @@
-package db.dao.tools_db;
+package app.utilities;
 
 import java.util.List;
 
 public class PrintTable {
-    //отдельно метод вывода таблицы для LIST и SORT
+
     public static void printTable(List<String[]> data) {
         String id = "animal_id";
         String type = "type";

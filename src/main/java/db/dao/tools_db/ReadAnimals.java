@@ -25,7 +25,17 @@ public class ReadAnimals extends AbstractTable {
     }
 
     @Override
-    protected void executeUpdate(int id, String data) throws SQLException {
+    protected void updateData(int id, String data) throws SQLException {
+
+    }
+
+    @Override
+    protected void createTable(String sqlCreateCommand) throws SQLException {
+
+    }
+
+    @Override
+    protected void deleteData(int id) throws SQLException {
 
     }
 

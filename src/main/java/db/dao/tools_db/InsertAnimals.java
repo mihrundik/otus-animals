@@ -4,7 +4,6 @@ import db.ConnectionManager;
 import db.dao.AbstractTable;
 import db.dao.AnimalTable;
 import app.factory.Animal;
-import app.factory.AnimalType;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,6 +19,25 @@ public class InsertAnimals extends AbstractTable {
         this.connectionManager = connectionManager;
     }
 
+    @Override
+    protected void updateData(int id, String data) throws SQLException {
+    }
+
+    @Override
+    protected List<String[]> readData(String type) throws SQLException {
+        return List.of();
+    }
+
+    @Override
+    protected void createTable(String sqlCreateCommand) throws SQLException {
+
+    }
+
+    @Override
+    protected void deleteData(int id) throws SQLException {
+
+    }
+
     // наследуем вставк от абстрактного метода
     @Override
     protected void insertData(Object data) throws SQLException {
@@ -27,11 +45,6 @@ public class InsertAnimals extends AbstractTable {
             insertAnimal(animal);
         }
     }
-
-    @Override
-    protected void executeUpdate(int id, String data) throws SQLException {
-    }
-
 
     public void insertAnimal(Animal animal) throws SQLException {
         executeInTransaction(() -> { //запускаем транзакцию

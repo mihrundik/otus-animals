@@ -1,11 +1,13 @@
 package app.animals;
 
-//3) Создайте класс Cat, унаследуйте его от Animal.
-//Переопределить метод Say (Вывод на экран: «Мяу»).
-
 import app.factory.Animal;
+import app.factory.AnimalType;
 
 public class Cat extends Animal {
+
+    public Cat(AnimalType type) {
+        super(type);
+    }
 
     @Override
     public void say() {
