@@ -26,7 +26,7 @@ public abstract class AbstractTable {
 
     // работа с транзакциями
     public void executeInTransaction(Runnable action) throws SQLException {
-        connectionManager.getConnection().setAutoCommit(false); // начиная транзакцию отключаем автокоммит на случай работы с oracle
+        connectionManager.getConnection().setAutoCommit(false); // начиная транзакцию отключаем автокоммит на случай работы с postgre
         try {
             action.run();
             connectionManager.getConnection().commit(); // при успешном завершении транзакции коммитим
