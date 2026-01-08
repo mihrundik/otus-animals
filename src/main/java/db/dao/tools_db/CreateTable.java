@@ -13,26 +13,6 @@ public class CreateTable extends AbstractTable {
         super(connectionManager);
     }
 
-    @Override
-    protected void insertData(Object data) throws SQLException {
-
-    }
-
-    @Override
-    protected void updateData(int id, String data) throws SQLException {
-
-    }
-
-    @Override
-    protected List<String[]> readData(String type) throws SQLException {
-        return List.of();
-    }
-
-    @Override
-    protected void deleteData(int id) throws SQLException {
-
-    }
-
     // создание таблицы при условии ее отсутствия
     public void createTable(String sqlCreateCommand) throws SQLException {
         try (PreparedStatement pstmt = ConnectionManager.getInstance().getConnection().prepareStatement(sqlCreateCommand)) {

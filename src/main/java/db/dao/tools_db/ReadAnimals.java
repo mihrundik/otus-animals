@@ -19,32 +19,6 @@ public class ReadAnimals extends AbstractTable {
         this.connectionManager = connectionManager;
     }
 
-    @Override
-    protected void insertData(Object data) throws SQLException {
-
-    }
-
-    @Override
-    protected void updateData(int id, String data) throws SQLException {
-
-    }
-
-    @Override
-    protected void createTable(String sqlCreateCommand) throws SQLException {
-
-    }
-
-    @Override
-    protected void deleteData(int id) throws SQLException {
-
-    }
-
-    @Override
-    protected List<String[]> readData(String type) throws SQLException {
-        this.type = type;
-        return retrieveByType(type);
-    }
-
     public List<String[]> retrieveAllAnimals() {
         return retrieveByType(null); // если операция LIST, то NULL
     }

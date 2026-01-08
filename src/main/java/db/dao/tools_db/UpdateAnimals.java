@@ -7,38 +7,16 @@ import db.dao.AnimalTable;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class UpdateAnimals extends AbstractTable {
-
-    private static ConnectionManager connectionManager;
-
+    
     public UpdateAnimals(ConnectionManager connectionManager) {
         super(connectionManager);
-        UpdateAnimals.connectionManager = connectionManager;
     }
 
-    @Override
-    protected void insertData(Object data) throws SQLException {
-
+    private void executeInTransaction(Runnable action) {
     }
 
-    @Override
-    protected List<String[]> readData(String type) throws SQLException {
-        return List.of();
-    }
-
-    @Override
-    protected void createTable(String sqlCreateCommand) throws SQLException {
-
-    }
-
-    @Override
-    protected void deleteData(int id) throws SQLException {
-
-    }
-
-    @Override
     protected void updateData(int id, String data) throws SQLException {
         executeInTransaction(() -> { // обновление в транзакции
             try {

@@ -7,11 +7,9 @@ import app.factory.Animal;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 
 public class InsertAnimals extends AbstractTable {
-
     private final ConnectionManager connectionManager;
 
     public InsertAnimals(ConnectionManager connectionManager) {
@@ -19,31 +17,7 @@ public class InsertAnimals extends AbstractTable {
         this.connectionManager = connectionManager;
     }
 
-    @Override
-    protected void updateData(int id, String data) throws SQLException {
-    }
-
-    @Override
-    protected List<String[]> readData(String type) throws SQLException {
-        return List.of();
-    }
-
-    @Override
-    protected void createTable(String sqlCreateCommand) throws SQLException {
-
-    }
-
-    @Override
-    protected void deleteData(int id) throws SQLException {
-
-    }
-
-    // наследуем вставк от абстрактного метода
-    @Override
-    protected void insertData(Object data) throws SQLException {
-        if (data instanceof Animal animal) {
-            insertAnimal(animal);
-        }
+    private void executeInTransaction(Runnable action) {
     }
 
     public void insertAnimal(Animal animal) throws SQLException {
