@@ -78,7 +78,7 @@ void main() throws SQLException {
                     animal.getName(), age, weightS, animal.getColor());
 
             UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
-            updater.update(inputId, formattedData);
+            updater.updateData(inputId, formattedData);
 
         } else if (currentCommand == Command.ADD) {
             animalType = ReadAnimalType.selectAnimalType(scanner);
