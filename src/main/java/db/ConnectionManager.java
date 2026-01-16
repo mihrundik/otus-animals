@@ -40,9 +40,6 @@ public class ConnectionManager {
         }
     }
 
-    public ConnectionManager() {
-
-    }
 
     // реализация Singleton - гарантия создания одного экземпляра класса - synchronized - метод сможет выполняться только одним потоком
     public static synchronized ConnectionManager getInstance() {
