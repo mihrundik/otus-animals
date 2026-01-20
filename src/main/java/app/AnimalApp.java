@@ -20,7 +20,7 @@ import static app.utilities.PrintTable.printTable;
 
 public class AnimalApp {
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         try {
             ConnectionManager connectionManager = ConnectionManager.getInstance();
@@ -68,7 +68,7 @@ public class AnimalApp {
                 List<String[]> allAnimals = retriever.retrieveAllAnimals();
                 printTable(allAnimals);
 
-                int inputId = ReadPositiveParam.readPositiveId(scanner);
+                int inputId = ReadPositiveParam.readPositiveId(scanner, allAnimals);
 
                 animalType = ReadAnimalType.selectAnimalType(scanner);
                 Animal animal = AnimalFactory.create(animalType);
@@ -80,8 +80,8 @@ public class AnimalApp {
                 String weightS = Double.toString(weightD).replace(',', '.');
                 animal.setColor(ReadSelectColor.selectColor(scanner));
 
-                String formattedData = String.format("%s,%d,%s,%s",
-                        animal.getName(), age, weightS, animal.getColor());
+                String formattedData = String.format("%s,%s,%d,%s,%s",
+                        animal.getType().name(), animal.getName(), age, weightS, animal.getColor());
 
                 UpdateAnimals updater = new UpdateAnimals(ConnectionManager.getInstance());
                 try {
