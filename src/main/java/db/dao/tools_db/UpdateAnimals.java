@@ -28,17 +28,18 @@ public class UpdateAnimals extends AbstractTable {
     }
 
     public boolean update(int id, String data) throws SQLException {
-        String sql = "UPDATE " + AnimalTable.TABLE_NAME + " SET name=?, age=?, weight=?, color=? WHERE animal_id=?";
+        String sql = "UPDATE " + AnimalTable.TABLE_NAME + " SET type=?, name=?, age=?, weight=?, color=? WHERE animal_id=?";
 
         try (PreparedStatement stmt = connectionManager.getConnection().prepareStatement(sql)) {
             // Разделяем строку на части
             String[] parts = data.split(",");
 
             stmt.setString(1, parts[0].trim());
-            stmt.setInt(2, Integer.parseInt(parts[1].trim()));
-            stmt.setDouble(3, Double.parseDouble(parts[2].trim()));
-            stmt.setObject(4, Color.stringColor(parts[3]));
-            stmt.setInt(5, id);
+            stmt.setString(2, parts[1].trim());
+            stmt.setInt(3, Integer.parseInt(parts[2].trim()));
+            stmt.setDouble(4, Double.parseDouble(parts[3].trim()));
+            stmt.setObject(5, Color.stringColor(parts[4]));
+            stmt.setInt(6, id);
 
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;
